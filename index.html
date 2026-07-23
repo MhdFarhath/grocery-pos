@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M.L.A Stores Grocery POS</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNmMWI4NGIiLz4KICA8cGF0aCBkPSJNMjAgMjdjMC05LjQgNS4yLTE2IDEyLTE2czEyIDYuNiAxMiAxNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMTIzNTI2IiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik0xMyAyN2gzOGwtNCAyMi40YTQuNiA0LjYgMCAwIDEtNC41IDMuNkgyMS41YTQuNiA0LjYgMCAwIDEtNC41LTMuNkwxMyAyN1oiIGZpbGw9IiMxMjM1MjYiLz4KICA8cGF0aCBkPSJNNDUgOWM0LjQgMCA4IDMuNSA4IDcuOCAwIDQuNC04IDcuMi04IDcuMnMtOC0yLjgtOC03LjJDMzcgMTIuNSA0MC42IDkgNDUgOVoiIGZpbGw9IiMxNjc5NGYiLz4KPC9zdmc+" />
+
+    <!-- PWA: install as a home-screen app on phones -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#16794f" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="M.L.A. POS" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">
+            <svg viewBox="0 0 42 42" width="26" height="26" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M13 18c0-6.5 3.6-11 8-11s8 4.5 8 11" fill="none" stroke="var(--sidebar-mark-ink)" stroke-width="2.6" stroke-linecap="round" />
+              <path d="M9 18h24l-2.6 14.6a3 3 0 0 1-2.96 2.4H14.56a3 3 0 0 1-2.96-2.4L9 18Z" fill="var(--sidebar-mark-ink)" />
+              <path d="M30 6.5c2.9 0 5.2 2.3 5.2 5.1 0 2.9-5.2 4.7-5.2 4.7s-5.2-1.8-5.2-4.7c0-2.8 2.3-5.1 5.2-5.1Z" fill="var(--accent)" />
+            </svg>
+          </div>
+          <div>
+            <h1>M.L.A. Stores</h1>
+            <p>Grocery checkout</p>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Main navigation">
+          <button class="active" data-view-button="pos">Checkout</button>
+          <button data-view-button="inventory">Inventory</button>
+          <button data-view-button="sales">Sales</button>
+          <button data-view-button="creditors">Creditors</button>
+          <button data-view-button="cheques" data-label="Cheques">Cheques<span class="nav-badge" id="cheque-alert-badge"></span></button>
+          <button data-view-button="settings">Settings</button>
+        </nav>
+
+        <div class="store-card">
+          <strong>Cashier:</strong> Main register<br />
+          <strong>Currency:</strong> LKR<br />
+          <strong>Status:</strong> Ready for sales
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <h2 id="page-title">Checkout</h2>
+          </div>
+          <div class="date-chip" id="date-chip"></div>
+        </header>
+
+        <section class="view active" id="view-pos">
+          <div class="pos-layout">
+            <section class="panel">
+              <div class="panel-head">
+                <h3>Products</h3>
+                <button class="secondary" id="reset-products">Reset demo items</button>
+              </div>
+              <div class="toolbar">
+                <div class="field">
+                  <label for="search">Search or barcode</label>
+                  <input id="search" type="search" placeholder="Name, or scan/type barcode..." autocomplete="off" />
+                </div>
+                <div class="field">
+                  <label for="category-filter">Category</label>
+                  <select id="category-filter">
+                    <option value="all">All categories</option>
+                  </select>
+                </div>
+              </div>
+              <div class="products" id="product-grid"></div>
+            </section>
+
+            <aside class="panel cart-panel">
+              <div class="panel-head">
+                <h3>Current Sale</h3>
+                <button class="danger-action" id="clear-cart">Clear</button>
+              </div>
+              <div class="cart-extra" id="cart-extra">
+                <div class="field">
+                  <label for="extra-label">Extra charge</label>
+                  <input id="extra-label" placeholder="e.g. Toffee, Bag charge" />
+                </div>
+                <div class="field">
+                  <label for="extra-amount">Amount</label>
+                  <input id="extra-amount" type="number" min="0" step="0.01" placeholder="0.00" />
+                </div>
+                <button class="secondary" type="button" id="add-extra-amount">Add amount</button>
+              </div>
+              <div class="cart-items" id="cart-items"></div>
+              <div class="summary">
+                <div class="summary-row"><span>Subtotal</span><strong id="subtotal">LKR 0.00</strong></div>
+                <div class="payment">
+                  <div class="field">
+                    <label for="discount">Discount</label>
+                    <input id="discount" type="number" min="0" step="1" value="0" />
+                  </div>
+                  <div class="field">
+                    <label for="tax">Tax %</label>
+                    <input id="tax" type="number" min="0" step="0.1" value="0" />
+                  </div>
+                </div>
+                <div class="summary-row"><span>Tax</span><strong id="tax-amount">LKR 0.00</strong></div>
+                <div class="summary-row total"><span>Total</span><strong id="total">LKR 0.00</strong></div>
+                <div class="payment">
+                  <div class="field">
+                    <label for="paid">Paid</label>
+                    <input id="paid" type="number" min="0" step="1" value="0" />
+                  </div>
+                  <div class="field">
+                    <label for="method">Payment</label>
+                    <select id="method">
+                      <option>Cash</option>
+                      <option>Card</option>
+                      <option>Mobile Pay</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="summary-row"><span>Change</span><strong id="change">LKR 0.00</strong></div>
+                <button class="primary" id="checkout">Complete Sale</button>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-inventory">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Inventory</h3>
+              <button class="primary" type="button" id="open-add-product">+ Add Item</button>
+            </div>
+            <form class="category-manager" id="category-form">
+              <div class="field">
+                <label for="new-category">Add category</label>
+                <input id="new-category" placeholder="Frozen Foods, Snacks, Vegetables..." />
+              </div>
+              <button class="secondary" type="submit">Add category</button>
+            </form>
+            <div class="category-list" id="category-list"></div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Barcode</th>
+                    <th>Item</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="inventory-table"></tbody>
+              </table>
+            </div>
+            <div class="pagination" id="inventory-pagination"></div>
+          </section>
+        </section>
+
+
+        <section class="view" id="view-sales">
+          <section class="panel">
+            <div class="date-filter">
+              <div class="field">
+                <label for="sales-from">From date</label>
+                <input id="sales-from" type="date" />
+              </div>
+              <div class="field">
+                <label for="sales-to">To date</label>
+                <input id="sales-to" type="date" />
+              </div>
+              <button type="button" class="filter-chip" data-sales-range="today">Today</button>
+              <button type="button" class="filter-chip" data-sales-range="week">This Week</button>
+              <button type="button" class="filter-chip" data-sales-range="month">This Month</button>
+              <button type="button" class="filter-chip active" data-sales-range="all">All Time</button>
+            </div>
+          </section>
+          <div class="stats">
+            <div class="panel stat"><span>Sales</span><strong id="stat-count">0</strong></div>
+            <div class="panel stat"><span>Revenue</span><strong id="stat-revenue">LKR 0</strong></div>
+            <div class="panel stat"><span>Items sold</span><strong id="stat-items">0</strong></div>
+            <div class="panel stat"><span>Average sale</span><strong id="stat-average">LKR 0</strong></div>
+          </div>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Sales History</h3>
+              <button class="secondary" id="export-sales">Export CSV</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Receipt</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Payment</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody id="sales-table"></tbody>
+              </table>
+            </div>
+            <div class="pagination" id="sales-pagination"></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-creditors">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Creditors</h3>
+              <button class="primary" type="button" id="open-add-creditor">+ Add Creditor</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="creditors-table"></tbody>
+              </table>
+            </div>
+            <div class="pagination" id="creditors-pagination"></div>
+          </section>
+        </section>
+
+
+
+
+        <section class="view" id="view-cheques">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Cheques to Suppliers</h3>
+              <button class="secondary" type="button" data-view-button="cheque-history" data-label="Cheque History">View History</button>
+              <button class="primary" type="button" id="open-add-cheque">+ Add Cheque</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cheque #</th>
+                    <th>Supplier</th>
+                    <th>Issue date</th>
+                    <th>Cheque date</th>
+                    <th>Amount</th>
+                    <th>Remaining</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="cheques-table"></tbody>
+              </table>
+            </div>
+            <div class="pagination" id="cheques-pagination"></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-cheque-history">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Cheque History</h3>
+              <button class="secondary" type="button" data-view-button="cheques" data-label="Cheques">Back to Cheques</button>
+            </div>
+            <div class="date-filter">
+              <div class="field">
+                <label for="cheque-history-from">From date</label>
+                <input id="cheque-history-from" type="date" />
+              </div>
+              <div class="field">
+                <label for="cheque-history-to">To date</label>
+                <input id="cheque-history-to" type="date" />
+              </div>
+              <button type="button" class="filter-chip active" data-cheque-history-range="all">All Time</button>
+              <button type="button" class="filter-chip" data-cheque-history-range="today">Today</button>
+              <button type="button" class="filter-chip" data-cheque-history-range="week">This Week</button>
+              <button type="button" class="filter-chip" data-cheque-history-range="month">This Month</button>
+            </div>
+            <div class="editor-actions">
+              <button class="secondary" type="button" id="export-cheque-history-csv">Export CSV</button>
+              <button class="secondary" type="button" id="export-cheque-history-pdf">Export PDF</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cheque #</th>
+                    <th>Supplier</th>
+                    <th>Cheque date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Resolved on</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="cheque-history-table"></tbody>
+              </table>
+            </div>
+            <div class="pagination" id="cheque-history-pagination"></div>
+          </section>
+        </section>
+
+
+
+        <section class="view" id="view-settings">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Store Settings</h3>
+            </div>
+            <form class="inventory-form settings-form" id="settings-form">
+              <div class="field">
+                <label for="store-name">Store name</label>
+                <input id="store-name" value="M.L.A. Stores" />
+              </div>
+              <div class="field">
+                <label for="store-phone">Phone 1</label>
+                <input id="store-phone" value="+94 77 000 0000" />
+              </div>
+              <div class="field">
+                <label for="store-phone-2">Phone 2</label>
+                <input id="store-phone-2" placeholder="Optional second number" />
+              </div>
+              <div class="field">
+                <label for="store-email">Email</label>
+                <input id="store-email" type="email" placeholder="store@example.com" />
+              </div>
+              <div class="field">
+                <label for="currency">Currency</label>
+                <input id="currency" value="LKR" />
+              </div>
+              <div class="field">
+                <label for="default-tax">Default tax %</label>
+                <input id="default-tax" type="number" min="0" step="0.1" value="0" />
+              </div>
+              <button class="primary" type="submit">Save</button>
+            </form>
+          </section>
+        </section>
+      </main>
+    </div>
+        <div class="drawer" id="add-product-drawer">
+          <div class="drawer-panel">
+            <div class="drawer-head">
+              <h3>Add Item</h3>
+              <button type="button" class="drawer-close" data-close-drawer="add-product-drawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+              <form class="inventory-form product-form" id="product-form">
+                <div class="field">
+                  <label for="product-name">Product name</label>
+                  <input id="product-name" required placeholder="Fresh carrots" />
+                </div>
+                <div class="field">
+                  <label for="product-barcode">Barcode</label>
+                  <input id="product-barcode" placeholder="Scan, or leave blank to auto-assign" />
+                </div>
+                <div class="field">
+                  <label for="product-category">Category</label>
+                  <select id="product-category"></select>
+                </div>
+                <div class="field">
+                  <label for="product-price">Price</label>
+                  <input id="product-price" type="number" min="1" step="0.01" required />
+                </div>
+                <div class="field">
+                  <label for="product-stock">Stock</label>
+                  <input id="product-stock" type="number" min="0" step="0.001" required />
+                </div>
+                <div class="field">
+                  <label for="product-sale-type">Sell as</label>
+                  <select id="product-sale-type">
+                    <option value="pack">Pack / piece</option>
+                    <option value="loose">Loose / weight</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="product-unit">Unit</label>
+                  <select id="product-unit">
+                    <option value="pack">pack</option>
+                    <option value="kg">kg</option>
+                    <option value="g">g</option>
+                    <option value="l">liter</option>
+                    <option value="ml">ml</option>
+                    <option value="piece">piece</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="product-image">Image</label>
+                  <input id="product-image" type="file" accept="image/*" />
+                  <img class="image-preview" id="product-image-preview" alt="" />
+                </div>
+                <button class="primary" type="submit">Add item</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="drawer" id="add-creditor-drawer">
+          <div class="drawer-panel">
+            <div class="drawer-head">
+              <h3>Add Creditor</h3>
+              <button type="button" class="drawer-close" data-close-drawer="add-creditor-drawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+              <form class="inventory-form creditor-form" id="creditor-form">
+                <div class="field">
+                  <label for="creditor-name">Customer name</label>
+                  <input id="creditor-name" required placeholder="Customer name" />
+                </div>
+                <div class="field">
+                  <label for="creditor-amount">Opening amount</label>
+                  <input id="creditor-amount" type="number" min="0" step="1" value="0" required />
+                </div>
+                <button class="primary" type="submit">Add creditor</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="drawer" id="view-creditor-drawer">
+          <div class="drawer-panel">
+            <div class="drawer-head">
+              <h3 id="view-creditor-name">Creditor</h3>
+              <button type="button" class="drawer-close no-print" data-close-drawer="view-creditor-drawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+              <div class="view-creditor-summary">
+                <span>Total owed</span>
+                <strong id="view-creditor-total">LKR 0.00</strong>
+              </div>
+              <div class="date-filter no-print">
+                <div class="field">
+                  <label for="creditor-statement-from">From date</label>
+                  <input id="creditor-statement-from" type="date" />
+                </div>
+                <div class="field">
+                  <label for="creditor-statement-to">To date</label>
+                  <input id="creditor-statement-to" type="date" />
+                </div>
+                <button type="button" class="filter-chip active" data-creditor-range="all">All Time</button>
+                <button type="button" class="filter-chip" data-creditor-range="today">Today</button>
+                <button type="button" class="filter-chip" data-creditor-range="week">This Week</button>
+                <button type="button" class="filter-chip" data-creditor-range="month">This Month</button>
+              </div>
+              <div class="editor-actions no-print">
+                <button class="secondary" type="button" id="export-creditor-statement">Export CSV</button>
+                <button class="secondary" type="button" id="export-creditor-statement-pdf">Export PDF</button>
+                <button class="secondary" type="button" id="print-creditor-statement">Print</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Description</th>
+                      <th>Credit</th>
+                      <th>Debit</th>
+                      <th>Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody id="view-creditor-table"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="drawer" id="edit-creditor-drawer">
+          <div class="drawer-panel">
+            <div class="drawer-head">
+              <h3>Edit Creditor</h3>
+              <span class="status-badge" id="creditor-edit-status">Active</span>
+              <button type="button" class="drawer-close" data-close-drawer="edit-creditor-drawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+              <form id="creditor-editor">
+                <div class="creditor-editor-grid">
+                  <div class="field">
+                    <label for="edit-creditor-name">Name</label>
+                    <input id="edit-creditor-name" required />
+                  </div>
+                  <div class="field">
+                    <label for="edit-creditor-amount">Credit amount</label>
+                    <input id="edit-creditor-amount" type="number" min="0" step="1" required />
+                  </div>
+                  <div class="field">
+                    <label for="add-credit-amount">New purchase (adds to credit)</label>
+                    <input id="add-credit-amount" type="number" min="0" step="1" value="0" />
+                  </div>
+                  <div class="field">
+                    <label for="credit-payment-amount">Payment received</label>
+                    <input id="credit-payment-amount" type="number" min="0" step="1" value="0" />
+                  </div>
+                  <div class="field">
+                    <label for="credit-remaining">Remaining balance</label>
+                    <input id="credit-remaining" type="number" min="0" step="1" value="0" readonly />
+                  </div>
+                </div>
+                <div class="editor-actions">
+                  <button class="primary" type="submit">Save changes</button>
+                  <button class="secondary" type="button" id="record-credit-payment">Record payment &amp; receipt</button>
+                  <button class="secondary" type="button" id="cancel-credit-edit">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="drawer" id="add-cheque-drawer">
+          <div class="drawer-panel">
+            <div class="drawer-head">
+              <h3>Add Cheque</h3>
+              <button type="button" class="drawer-close" data-close-drawer="add-cheque-drawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+              <form class="inventory-form cheque-form" id="cheque-form">
+                <div class="field">
+                  <label for="cheque-number">Cheque number</label>
+                  <input id="cheque-number" required placeholder="000123" />
+                </div>
+                <div class="field">
+                  <label for="cheque-supplier">Supplier name</label>
+                  <input id="cheque-supplier" required placeholder="Supplier name" />
+                </div>
+                <div class="field">
+                  <label for="cheque-issue-date">Issue date</label>
+                  <input id="cheque-issue-date" type="date" required />
+                </div>
+                <div class="field">
+                  <label for="cheque-date">Cheque date</label>
+                  <input id="cheque-date" type="date" required />
+                </div>
+                <div class="field">
+                  <label for="cheque-amount">Amount</label>
+                  <input id="cheque-amount" type="number" min="0" step="0.01" value="0" required />
+                </div>
+                <button class="primary" type="submit">Add cheque</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="drawer" id="edit-cheque-drawer">
+          <div class="drawer-panel">
+            <div class="drawer-head">
+              <h3>Edit Cheque</h3>
+              <button type="button" class="drawer-close" data-close-drawer="edit-cheque-drawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+              <form id="cheque-editor">
+                <div class="cheque-editor-grid">
+                  <div class="field">
+                    <label for="edit-cheque-number">Cheque number</label>
+                    <input id="edit-cheque-number" required />
+                  </div>
+                  <div class="field">
+                    <label for="edit-cheque-supplier">Supplier name</label>
+                    <input id="edit-cheque-supplier" required />
+                  </div>
+                  <div class="field">
+                    <label for="edit-cheque-issue-date">Issue date</label>
+                    <input id="edit-cheque-issue-date" type="date" required />
+                  </div>
+                  <div class="field">
+                    <label for="edit-cheque-date">Cheque date</label>
+                    <input id="edit-cheque-date" type="date" required />
+                  </div>
+                  <div class="field">
+                    <label for="edit-cheque-amount">Amount</label>
+                    <input id="edit-cheque-amount" type="number" min="0" step="0.01" required />
+                  </div>
+                </div>
+                <div class="editor-actions">
+                  <button class="primary" type="submit">Save changes</button>
+                  <button class="secondary" type="button" id="cancel-cheque-edit">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+    <div class="receipt" id="receipt-modal" role="dialog" aria-modal="true" aria-label="Receipt">
+      <div class="receipt-paper" id="receipt-paper"></div>
+    </div>
+
+    <div class="receipt" id="quantity-modal" role="dialog" aria-modal="true" aria-label="Quantity">
+      <div class="receipt-paper quantity-paper">
+        <h3 id="quantity-title">Add loose item</h3>
+        <small id="quantity-price"></small>
+        <div class="line"></div>
+        <div class="field">
+          <label for="quantity-input">Quantity</label>
+          <input id="quantity-input" type="number" min="0" step="0.001" />
+        </div>
+        <div class="quick-qty" id="quick-qty"></div>
+        <div class="summary-row total"><span>Line total</span><strong id="quantity-total">LKR 0.00</strong></div>
+        <div class="receipt-actions">
+          <button class="secondary" id="cancel-quantity">Cancel</button>
+          <button class="primary" id="add-quantity">Add to cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="receipt" id="credit-customer-modal" role="dialog" aria-modal="true" aria-label="Credit customer">
+      <div class="receipt-paper quantity-paper">
+        <h3>Who is this credit for?</h3>
+        <small id="credit-customer-subtitle"></small>
+        <div class="line"></div>
+        <div class="payment">
+          <div class="field">
+            <label for="credit-amount">Credit amount</label>
+            <input id="credit-amount" type="number" min="0" step="1" value="0" readonly />
+          </div>
+          <div class="field">
+            <label for="creditor-select">Creditor</label>
+            <select id="creditor-select"></select>
+          </div>
+        </div>
+        <div class="field new-creditor" id="new-creditor-field">
+          <label for="new-creditor-name">New credit customer</label>
+          <input id="new-creditor-name" placeholder="Customer name" />
+        </div>
+        <div class="receipt-actions">
+          <button class="secondary" id="cancel-credit-customer">Cancel</button>
+          <button class="primary" id="confirm-credit-customer">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="receipt" id="app-dialog" role="alertdialog" aria-modal="true" aria-label="Notice">
+      <div class="app-dialog-box">
+        <p id="app-dialog-message"></p>
+        <div class="editor-actions" id="app-dialog-actions"></div>
+      </div>
+    </div>
+
+    <!-- Supabase client library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- App modules, loaded in dependency order (classic scripts, not ES modules,
+         so this page still works when opened directly as a file - no local server needed) -->
+    <script src="js/config.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dialogs.js"></script>
+    <script src="js/drawers.js"></script>
+    <script src="js/pagination.js"></script>
+    <script src="js/catalog.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/sales.js"></script>
+    <script src="js/creditors.js"></script>
+    <script src="js/cheques.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- PWA: register the service worker so the app can be installed and
+         opens instantly. Only works over HTTPS or localhost - browsers
+         block service workers on plain http:// for security. -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("sw.js").catch(() => {
+            // Fails silently on http:// (e.g. local WiFi testing) - the app
+            // still works fine, it just won't be installable/offline-cached.
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

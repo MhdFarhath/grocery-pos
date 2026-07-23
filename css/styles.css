@@ -1,0 +1,1088 @@
+/* M.L.A Stores Grocery POS - all styles */
+
+      :root {
+        --bg: #f3faf6;
+        --panel: #ffffff;
+        --panel-alt: #fbfdf9;
+        --chip: #e9f1ec;
+        --ink: #1b241f;
+        --muted: #5c6b62;
+        --line: #d8e6dd;
+        --accent: #16794f;
+        --accent-dark: #0e5c3a;
+        --accent-ring: rgba(22, 121, 79, 0.22);
+        --yellow: #f1b84b;
+        --yellow-soft: #fff0cf;
+        --yellow-line: #e5c16f;
+        --yellow-ink: #6d531d;
+        --amber-ink: #9a5a20;
+        --danger: #b42318;
+        --blue: #2764a5;
+        --green-soft: #e2f5ea;
+        --red-soft: #fde8e5;
+        --shadow: 0 12px 35px rgba(23, 60, 40, 0.1);
+        --shadow-sm: 0 4px 18px rgba(23, 60, 40, 0.06);
+        --overlay: rgba(16, 24, 20, 0.52);
+        --dashed-line: #bcb3a5;
+
+        --sidebar-bg: #123526;
+        --sidebar-ink: #eef8f1;
+        --sidebar-muted: #a9cdb8;
+        --sidebar-hover: rgba(255, 255, 255, 0.12);
+        --sidebar-line: rgba(255, 255, 255, 0.16);
+        --sidebar-mark-ink: #123526;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+      }
+
+      .sidebar {
+        background: var(--sidebar-bg);
+        color: var(--sidebar-ink);
+        padding: 22px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: var(--yellow);
+        color: var(--sidebar-mark-ink);
+        font-weight: 800;
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-size: 19px;
+      }
+
+      .brand p {
+        margin: 4px 0 0;
+        color: var(--sidebar-muted);
+        font-size: 13px;
+      }
+
+      .nav {
+        display: grid;
+        gap: 8px;
+      }
+
+      .nav button {
+        width: 100%;
+        min-height: 42px;
+        text-align: left;
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: var(--sidebar-ink);
+        background: transparent;
+      }
+
+      .nav button.active,
+      .nav button:hover {
+        background: var(--sidebar-hover);
+      }
+
+      .store-card {
+        margin-top: auto;
+        padding: 14px;
+        border: 1px solid var(--sidebar-line);
+        border-radius: 8px;
+        color: var(--sidebar-muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .main {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-width: 0;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .topbar h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .date-chip {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: var(--muted);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .view {
+        display: none;
+      }
+
+      .view.active {
+        display: block;
+      }
+
+      .pos-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 390px;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      .panel-head {
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .panel-head h3 {
+        margin: 0;
+        font-size: 17px;
+      }
+
+      .toolbar {
+        padding: 14px;
+        display: grid;
+        grid-template-columns: 1fr 170px;
+        gap: 10px;
+      }
+
+      .date-filter {
+        padding: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: end;
+      }
+
+      .date-filter .field {
+        min-width: 150px;
+        flex: 1;
+      }
+
+      .filter-chip {
+        min-height: 38px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: var(--panel-alt);
+        color: var(--ink);
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .filter-chip:hover {
+        border-color: var(--accent);
+      }
+
+      .filter-chip.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 14px;
+      }
+
+      .pagination-info {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .pagination button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      #view-creditor-drawer .drawer-panel {
+        width: min(720px, 100%);
+      }
+
+      .view-creditor-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        border-radius: 10px;
+        background: var(--green-soft);
+        margin-bottom: 14px;
+      }
+
+      .view-creditor-summary span {
+        font-weight: 700;
+        color: var(--accent-dark);
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.03em;
+      }
+
+      .view-creditor-summary strong {
+        font-size: 22px;
+        color: var(--accent-dark);
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      input,
+      select {
+        width: 100%;
+        height: 42px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0 12px;
+        background: var(--panel-alt);
+        color: var(--ink);
+      }
+
+      input:focus,
+      select:focus {
+        outline: 2px solid var(--accent-ring);
+        border-color: var(--accent);
+      }
+
+      .products {
+        padding: 0 14px 14px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+      }
+
+      .product {
+        min-height: 132px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel-alt);
+        display: grid;
+        gap: 10px;
+        text-align: left;
+      }
+
+      .product:hover {
+        border-color: var(--accent);
+        transform: translateY(-1px);
+      }
+
+      .product-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .thumb {
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-weight: 800;
+        letter-spacing: 0;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .thumb.produce {
+        background: #27845f;
+      }
+
+      .thumb.dairy {
+        background: #2764a5;
+      }
+
+      .thumb.bakery {
+        background: #9a5a20;
+      }
+
+      .thumb.dry {
+        background: #7857a8;
+      }
+
+      .thumb.household {
+        background: #6b7078;
+      }
+
+      .product strong {
+        display: block;
+        font-size: 14px;
+        line-height: 1.25;
+      }
+
+      .product small {
+        color: var(--muted);
+      }
+
+      .price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 8px;
+      }
+
+      .price {
+        font-weight: 800;
+      }
+
+      .stock {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .stock.low {
+        color: var(--danger);
+        font-weight: 700;
+      }
+
+      .cart-panel {
+        position: sticky;
+        top: 20px;
+      }
+
+      .cart-items {
+        min-height: 260px;
+        max-height: 38vh;
+        overflow: auto;
+        padding: 8px 14px;
+      }
+
+      .cart-extra {
+        display: grid;
+        grid-template-columns: 1fr 100px auto;
+        gap: 8px;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        align-items: end;
+      }
+
+      .cart-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .cart-row strong {
+        display: block;
+        font-size: 14px;
+      }
+
+      .cart-controls {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .icon-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        background: var(--chip);
+        color: var(--ink);
+        font-weight: 800;
+      }
+
+      .icon-btn.danger {
+        color: var(--danger);
+      }
+
+      .summary {
+        padding: 14px;
+        display: grid;
+        gap: 10px;
+        border-top: 1px solid var(--line);
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .summary-row.total {
+        padding-top: 10px;
+        border-top: 1px dashed var(--line);
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .payment {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .credit-box {
+        display: none;
+        padding: 12px;
+        border: 1px solid var(--yellow-line);
+        border-radius: 8px;
+        background: var(--yellow-soft);
+        gap: 10px;
+      }
+
+      .credit-box.active,
+      .new-creditor.active {
+        display: grid;
+      }
+
+      .new-creditor {
+        display: none;
+      }
+
+      .credit-note {
+        margin: 0;
+        color: var(--yellow-ink);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .primary,
+      .secondary,
+      .danger-action {
+        min-height: 42px;
+        border-radius: 8px;
+        padding: 0 14px;
+        font-weight: 800;
+      }
+
+      .primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .primary:hover {
+        background: var(--accent-dark);
+      }
+
+      .secondary {
+        background: var(--chip);
+        color: var(--ink);
+      }
+
+      .danger-action {
+        background: var(--red-soft);
+        color: var(--danger);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .stat {
+        padding: 14px;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .stat strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 24px;
+      }
+
+      .table-wrap {
+        overflow: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+
+      th,
+      td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .inventory-form {
+        display: grid;
+        grid-template-columns: 1.2fr 0.9fr 0.7fr 0.7fr auto;
+        gap: 10px;
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+        align-items: end;
+      }
+
+      .category-manager {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) auto;
+        gap: 10px;
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+        align-items: end;
+      }
+
+      .category-list {
+        padding: 0 14px 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .category-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 32px;
+        padding: 0 8px 0 10px;
+        border-radius: 8px;
+        background: var(--green-soft);
+        color: var(--accent-dark);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .category-pill button {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.8);
+        color: var(--danger);
+        font-weight: 800;
+      }
+
+      .inventory-form.product-form {
+        grid-template-columns: 1.2fr 0.9fr 0.7fr 0.7fr 0.8fr 0.9fr auto;
+      }
+
+      .image-preview {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: var(--chip);
+        object-fit: cover;
+        display: none;
+      }
+
+      .image-preview.active {
+        display: block;
+      }
+
+      .quantity-paper {
+        width: min(430px, 100%);
+      }
+
+      .quick-qty {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+
+      .creditor-form {
+        grid-template-columns: 1.3fr 0.7fr auto;
+      }
+
+      .settings-form {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+
+      .cheque-form {
+        grid-template-columns: 0.9fr 1.2fr 0.9fr 0.9fr 0.8fr auto;
+      }
+
+      .cheque-days {
+        font-weight: 700;
+      }
+
+      .cheque-days.overdue {
+        color: var(--danger);
+      }
+
+      .cheque-days.due-soon {
+        color: var(--amber-ink);
+      }
+
+      #cheque-editor {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .cheque-editor-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr 0.8fr 0.8fr 0.8fr;
+        gap: 10px;
+        align-items: end;
+      }
+
+      .cheque-row-alert td {
+        background: var(--red-soft);
+      }
+
+      .cheque-row-deposited td {
+        background: var(--green-soft);
+      }
+
+      .cheque-status-badge {
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .cheque-status-badge.deposited {
+        color: var(--accent-dark);
+      }
+
+      .cheque-status-badge.removed {
+        color: var(--danger);
+      }
+
+      .nav-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 5px;
+        margin-left: 6px;
+        border-radius: 999px;
+        background: var(--danger);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 800;
+        vertical-align: middle;
+      }
+
+      .nav-badge:empty {
+        display: none;
+      }
+
+      #creditor-editor {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .creditor-editor-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.7fr 0.7fr 0.7fr;
+        gap: 10px;
+        align-items: end;
+      }
+
+      .editor-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .drawer {
+        position: fixed;
+        inset: 0;
+        background: var(--overlay);
+        z-index: 30;
+        display: none;
+        justify-content: flex-end;
+      }
+
+      .drawer.open {
+        display: flex;
+      }
+
+      .drawer-panel {
+        width: min(480px, 100%);
+        height: 100%;
+        background: var(--panel);
+        box-shadow: -12px 0 40px rgba(0, 0, 0, 0.22);
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        animation: drawer-slide-in 0.22s ease forwards;
+      }
+
+      @keyframes drawer-slide-in {
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      .drawer-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .drawer-head h3 {
+        margin: 0;
+        flex: 1;
+      }
+
+      .drawer-close {
+        width: 34px;
+        height: 34px;
+        min-height: 34px;
+        border-radius: 8px;
+        background: var(--chip);
+        color: var(--ink);
+        font-size: 18px;
+        line-height: 1;
+        font-weight: 800;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+      }
+
+      .drawer-body {
+        padding: 20px;
+        overflow-y: auto;
+        flex: 1;
+        text-align: left;
+      }
+
+      .drawer-body form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        text-align: left;
+      }
+
+      .drawer-body .field {
+        width: 100%;
+        text-align: left;
+      }
+
+      .drawer-body .field label {
+        display: block;
+        text-align: left;
+      }
+
+      .drawer-body input,
+      .drawer-body select {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: left;
+      }
+
+      .drawer-body .creditor-editor-grid,
+      .drawer-body .cheque-editor-grid {
+        grid-template-columns: 1fr;
+      }
+
+      @media (max-width: 740px) {
+        .drawer-panel {
+          width: 100%;
+        }
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 0 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        background: var(--green-soft);
+        color: var(--accent-dark);
+      }
+
+      .empty {
+        padding: 30px 14px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .receipt {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--overlay);
+        z-index: 40;
+        padding: 20px;
+        place-items: center;
+      }
+
+      .receipt.open {
+        display: grid;
+      }
+
+      .receipt-paper {
+        width: min(420px, 100%);
+        max-height: 90vh;
+        overflow: auto;
+        background: #fffdf9;
+        border-radius: 8px;
+        padding: 22px;
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      .receipt-paper h3 {
+        margin: 0 0 4px;
+      }
+
+      .receipt-paper .line {
+        border-top: 1px dashed var(--dashed-line);
+        margin: 12px 0;
+      }
+
+      .receipt-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .app-dialog-box {
+        width: min(360px, 100%);
+        background: var(--panel);
+        border-radius: 10px;
+        padding: 22px;
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
+        text-align: center;
+      }
+
+      .app-dialog-box p {
+        margin: 0 0 18px;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--ink);
+        white-space: pre-line;
+      }
+
+      .app-dialog-box .editor-actions {
+        justify-content: center;
+      }
+
+      .app-dialog-box .editor-actions button {
+        flex: 1;
+        min-width: 100px;
+      }
+
+      @media print {
+        @page {
+          margin: 10mm;
+        }
+
+        body {
+          background: #fff;
+        }
+
+        .app,
+        .receipt:not(.open),
+        .drawer:not(.open) {
+          display: none !important;
+        }
+
+        .receipt.open {
+          position: static;
+          display: block;
+          background: transparent;
+          padding: 0;
+        }
+
+        .receipt-paper {
+          box-shadow: none;
+          width: 100%;
+          max-height: none;
+          overflow: visible;
+        }
+
+        .receipt-actions {
+          display: none;
+        }
+
+        .drawer.open {
+          position: static;
+          display: block;
+          background: transparent;
+        }
+
+        .drawer-panel {
+          width: 100%;
+          height: auto;
+          box-shadow: none;
+          transform: none;
+          animation: none;
+          display: block;
+        }
+
+        .drawer-body {
+          overflow: visible;
+          flex: none;
+        }
+
+        .table-wrap {
+          overflow: visible;
+        }
+
+        table {
+          min-width: 0;
+        }
+
+        .drawer-close,
+        .no-print {
+          display: none !important;
+        }
+      }
+
+      @media (max-width: 1050px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: sticky;
+          top: 0;
+          z-index: 10;
+          flex-direction: row;
+          align-items: center;
+          flex-wrap: wrap;
+          padding: 12px;
+        }
+
+        .nav {
+          grid-template-columns: repeat(5, auto);
+          margin-left: auto;
+        }
+
+        .store-card {
+          display: none;
+        }
+
+        .pos-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .cart-panel {
+          position: static;
+        }
+      }
+
+      @media (max-width: 740px) {
+        .main {
+          padding: 12px;
+        }
+
+        .brand {
+          width: 100%;
+        }
+
+        .nav {
+          width: 100%;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          margin-left: 0;
+        }
+
+        .toolbar,
+        .payment,
+        .credit-box,
+        .cart-extra,
+        .inventory-form,
+        .creditor-form,
+        .cheque-form,
+        .creditor-editor-grid,
+        .cheque-editor-grid,
+        .stats {
+          grid-template-columns: 1fr;
+        }
+
+        .products {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .product {
+          min-height: 146px;
+        }
+      }

@@ -1,0 +1,31 @@
+{
+  "name": "M.L.A. Stores Grocery POS",
+  "short_name": "M.L.A. POS",
+  "description": "Grocery checkout, inventory, sales, creditors, and cheque tracking for M.L.A. Stores.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f3faf6",
+  "theme_color": "#16794f",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
