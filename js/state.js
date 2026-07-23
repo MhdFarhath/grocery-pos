@@ -1,29 +1,12 @@
 /*
   state.js
-  App-wide state: default categories, demo products, the `state` object,
-  cached DOM references (`els`), and normalizeProduct().
+  App-wide state, the `state` object, cached DOM references (`els`), and
+  normalizeProduct().
 */
-
-      const defaultCategories = ["Produce", "Dairy", "Bakery", "Dry Goods", "Household"];
-
-      const demoProducts = [
-        { id: 1001, name: "Basmati Rice 5kg", category: "Dry Goods", price: 2450, stock: 24, saleType: "pack", unit: "pack" },
-        { id: 1002, name: "Fresh Milk 1L", category: "Dairy", price: 520, stock: 36, saleType: "pack", unit: "pack" },
-        { id: 1003, name: "Brown Bread", category: "Bakery", price: 390, stock: 18, saleType: "pack", unit: "pack" },
-        { id: 1004, name: "Red Apples", category: "Produce", price: 980, stock: 15, saleType: "loose", unit: "kg" },
-        { id: 1005, name: "Eggs 10 Pack", category: "Dairy", price: 760, stock: 22, saleType: "pack", unit: "pack" },
-        { id: 1006, name: "Sugar 1kg", category: "Dry Goods", price: 410, stock: 40, saleType: "pack", unit: "pack" },
-        { id: 1007, name: "Laundry Powder", category: "Household", price: 1180, stock: 11, saleType: "pack", unit: "pack" },
-        { id: 1008, name: "Tomatoes", category: "Produce", price: 640, stock: 9, saleType: "loose", unit: "kg" },
-        { id: 1009, name: "Coconut Oil 1L", category: "Dry Goods", price: 1320, stock: 16, saleType: "pack", unit: "pack" },
-        { id: 1010, name: "Cheese 200g", category: "Dairy", price: 890, stock: 7, saleType: "pack", unit: "pack" },
-        { id: 1011, name: "Burger Buns", category: "Bakery", price: 460, stock: 14, saleType: "pack", unit: "pack" },
-        { id: 1012, name: "Dish Soap", category: "Household", price: 560, stock: 19, saleType: "pack", unit: "pack" }
-      ];
 
       const state = {
         products: [],
-        categories: [...defaultCategories],
+        categories: [],
         cart: [],
         sales: [],
         creditors: [],

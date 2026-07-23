@@ -159,14 +159,8 @@
           }
         );
 
-        state.products =
-          productsRes.data && productsRes.data.length
-            ? productsRes.data.map(fromDbProduct)
-            : demoProducts.map(normalizeProduct);
-        state.categories =
-          categoriesRes.data && categoriesRes.data.length
-            ? categoriesRes.data.map((row) => row.name)
-            : [...defaultCategories];
+        state.products = (productsRes.data || []).map(fromDbProduct);
+        state.categories = categoriesRes.data && categoriesRes.data.length ? categoriesRes.data.map((row) => row.name) : [];
         state.sales = (salesRes.data || []).map(fromDbSale);
         state.creditors = (creditorsRes.data || []).map((row) => ({ id: row.id, name: row.name, amount: row.amount }));
         state.creditorPayments = (paymentsRes.data || []).map(fromDbPayment);

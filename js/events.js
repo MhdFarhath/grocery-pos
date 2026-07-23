@@ -597,24 +597,6 @@
           renderSales();
         });
       });
-      document.getElementById("reset-products").addEventListener("click", async () => {
-        if (!(await showConfirm("This replaces the shared product list on the server with the demo items for everyone. Continue?"))) return;
-        try {
-          const existingIds = state.products.map((product) => product.id);
-          if (existingIds.length) {
-            const { error: deleteError } = await db.from("products").delete().in("id", existingIds);
-            if (deleteError) throw deleteError;
-          }
-          const demoRows = demoProducts.map((product) => toDbProduct(normalizeProduct(product)));
-          const { error: insertError } = await db.from("products").insert(demoRows);
-          if (insertError) throw insertError;
-          state.products = demoProducts.map((product) => ({ ...normalizeProduct(product) }));
-          state.cart = [];
-          renderAll();
-        } catch (err) {
-          await showAlert("Could not reset products on the server: " + err.message);
-        }
-      });
       els.receiptModal.addEventListener("click", (event) => {
         if (event.target.id === "receipt-modal" || event.target.id === "close-receipt") {
           els.receiptModal.classList.remove("open");
