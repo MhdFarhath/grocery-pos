@@ -16,17 +16,54 @@
         renderCategoryList(categories);
       }
 
+      // Category Management page: one row per category, with its products,
+      // item count, and Edit / Delete buttons.
       function renderCategoryList(categories = state.categories) {
-        els.categoryList.innerHTML = categories
-          .map(
-            (category) => `
-              <span class="category-pill">
-                ${category}
-                <button type="button" title="Rename category" data-edit-category="${category}">&#9998;</button>
-                <button type="button" title="Delete category" data-delete-category="${category}">x</button>
-              </span>`
-          )
-          .join("");
+        const { pageItems, safePage, totalPages, start } = paginate(categories, state.categoriesPage || 1);
+        state.categoriesPage = safePage;
+        const MAX_NAMES = 8;
+
+        els.categoryList.innerHTML =
+          pageItems
+            .map((category, index) => {
+              const products = state.products.filter((product) => product.category === category);
+              const names = products
+                .slice(0, MAX_NAMES)
+                .map((product) => `<span>${product.name}</span>`)
+                .join("");
+              const more =
+                products.length > MAX_NAMES ? `<span class="more">+${products.length - MAX_NAMES} more</span>` : "";
+              return `
+                <tr>
+                  <td>${start + index + 1}</td>
+                  <td><strong>${category}</strong></td>
+                  <td>${products.length}</td>
+                  <td>${
+                    products.length
+                      ? `<div class="category-products">${names}${more}</div>`
+                      : `<small>No products yet</small>`
+                  }</td>
+                  <td class="category-actions">
+                    <button type="button" class="secondary" data-edit-category="${category}">Edit</button>
+                    <button type="button" class="danger-action" data-delete-category="${category}">Delete</button>
+                  </td>
+                </tr>`;
+            })
+            .join("") || `<tr><td colspan="5" class="empty">No categories yet. Add one above.</td></tr>`;
+
+        renderPaginationControls(
+          "categories-pagination",
+          safePage,
+          totalPages,
+          () => {
+            state.categoriesPage = safePage - 1;
+            renderCategoryList();
+          },
+          () => {
+            state.categoriesPage = safePage + 1;
+            renderCategoryList();
+          }
+        );
       }
 
       function filteredProducts() {

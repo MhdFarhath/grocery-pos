@@ -238,3 +238,23 @@
           saveButton.disabled = false;
         }
       });
+
+      // ---------------- Sidebar highlight for sub-pages ----------------
+      // In-page buttons like "Categories" / "Back to Inventory" also switch
+      // views; keep the matching sidebar item highlighted when they do.
+      const SUB_PAGE_PARENT = { categories: "inventory", "cheque-history": "cheques" };
+
+      document.querySelectorAll("[data-view-button]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const view = button.dataset.viewButton;
+          const navView = SUB_PAGE_PARENT[view] || view;
+          const navButton = document.querySelector(`.nav [data-view-button="${navView}"]`);
+          if (!navButton) return;
+          document.querySelectorAll("[data-view-button]").forEach((item) => item.classList.remove("active"));
+          navButton.classList.add("active");
+          if (view === "categories") {
+            state.categoriesPage = 1;
+            renderCategoryList();
+          }
+        });
+      });

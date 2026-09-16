@@ -70,6 +70,7 @@
           await showAlert("This category is used by products. Move or delete those products first.");
           return;
         }
+        if (!(await showConfirm(`Delete the category "${category}"?`))) return;
         try {
           const { error } = await db.from("categories").delete().eq("name", category);
           if (error) throw error;

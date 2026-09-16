@@ -15,6 +15,19 @@
     <meta name="apple-mobile-web-app-title" content="M.L.A. POS" />
 
     <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      .category-products { display: flex; flex-wrap: wrap; gap: 6px; max-width: 520px; }
+      .category-products span {
+        padding: 2px 10px;
+        border-radius: 999px;
+        border: 1px solid currentColor;
+        opacity: 0.8;
+        font-size: 0.85em;
+        white-space: nowrap;
+      }
+      .category-products .more { border-style: dashed; }
+      .category-actions { white-space: nowrap; }
+    </style>
   </head>
   <body>
     <div class="app">
@@ -134,16 +147,9 @@
           <section class="panel">
             <div class="panel-head">
               <h3>Inventory</h3>
+              <button class="secondary" type="button" data-view-button="categories" data-label="Category Management">Categories</button>
               <button class="primary" type="button" id="open-add-product">+ Add Item</button>
             </div>
-            <form class="category-manager" id="category-form">
-              <div class="field">
-                <label for="new-category">Add category</label>
-                <input id="new-category" placeholder="Frozen Foods, Snacks, Vegetables..." />
-              </div>
-              <button class="secondary" type="submit">Add category</button>
-            </form>
-            <div class="category-list" id="category-list"></div>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -164,6 +170,37 @@
           </section>
         </section>
 
+
+        <section class="view" id="view-categories">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Category Management</h3>
+              <button class="secondary" type="button" data-view-button="inventory" data-label="Inventory">Back to Inventory</button>
+            </div>
+            <form class="category-manager" id="category-form">
+              <div class="field">
+                <label for="new-category">New category name</label>
+                <input id="new-category" placeholder="Frozen Foods, Snacks, Vegetables..." />
+              </div>
+              <button class="primary" type="submit">+ Add Category</button>
+            </form>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Category</th>
+                    <th>Items</th>
+                    <th>Products in this category</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="category-list"></tbody>
+              </table>
+            </div>
+            <div class="pagination" id="categories-pagination"></div>
+          </section>
+        </section>
 
         <section class="view" id="view-sales">
           <section class="panel">
