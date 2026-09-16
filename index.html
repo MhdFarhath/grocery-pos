@@ -402,6 +402,87 @@
             </div>
           </div>
         </div>
+        <div class="drawer" id="edit-product-drawer">
+          <div class="drawer-panel">
+            <div class="drawer-head">
+              <h3>Edit Item</h3>
+              <button type="button" class="drawer-close" data-close-drawer="edit-product-drawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+              <form class="inventory-form product-form" id="product-editor">
+                <div class="field">
+                  <label for="edit-product-name">Product name</label>
+                  <input id="edit-product-name" required />
+                </div>
+                <div class="field">
+                  <label for="edit-product-barcode">Barcode</label>
+                  <input id="edit-product-barcode" placeholder="Leave blank to use the item number" />
+                </div>
+                <div class="field">
+                  <label for="edit-product-category">Category</label>
+                  <select id="edit-product-category"></select>
+                </div>
+                <div class="field">
+                  <label for="edit-product-price">Price</label>
+                  <input id="edit-product-price" type="number" min="0" step="0.01" required />
+                </div>
+                <div class="field">
+                  <label for="edit-product-stock">Stock</label>
+                  <input id="edit-product-stock" type="number" min="0" step="0.001" required />
+                </div>
+                <div class="field">
+                  <label for="edit-product-sale-type">Sell as</label>
+                  <select id="edit-product-sale-type">
+                    <option value="pack">Pack / piece</option>
+                    <option value="loose">Loose / weight</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="edit-product-unit">Unit</label>
+                  <select id="edit-product-unit">
+                    <option value="pack">pack</option>
+                    <option value="kg">kg</option>
+                    <option value="g">g</option>
+                    <option value="l">liter</option>
+                    <option value="ml">ml</option>
+                    <option value="piece">piece</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="edit-product-image">Image (choose a file to replace it)</label>
+                  <input id="edit-product-image" type="file" accept="image/*" />
+                  <img class="image-preview" id="edit-product-image-preview" alt="" />
+                  <label><input type="checkbox" id="edit-product-remove-image" /> Remove current image</label>
+                </div>
+                <div class="editor-actions">
+                  <button class="primary" type="submit">Save changes</button>
+                  <button class="secondary" type="button" id="cancel-product-edit">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="drawer" id="edit-category-drawer">
+          <div class="drawer-panel">
+            <div class="drawer-head">
+              <h3>Rename Category</h3>
+              <button type="button" class="drawer-close" data-close-drawer="edit-category-drawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+              <form class="inventory-form" id="category-editor">
+                <div class="field">
+                  <label for="edit-category-name">Category name</label>
+                  <input id="edit-category-name" required />
+                </div>
+                <p id="edit-category-usage"></p>
+                <div class="editor-actions">
+                  <button class="primary" type="submit">Save changes</button>
+                  <button class="secondary" type="button" id="cancel-category-edit">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
         <div class="drawer" id="add-creditor-drawer">
           <div class="drawer-panel">
             <div class="drawer-head">
@@ -661,6 +742,7 @@
     <script src="js/settings.js"></script>
     <script src="js/render.js"></script>
     <script src="js/events.js"></script>
+    <script src="js/inventory-edit.js"></script>
     <script src="js/main.js"></script>
 
     <!-- PWA: register the service worker so the app can be installed and

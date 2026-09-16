@@ -22,6 +22,7 @@
             (category) => `
               <span class="category-pill">
                 ${category}
+                <button type="button" title="Rename category" data-edit-category="${category}">&#9998;</button>
                 <button type="button" title="Delete category" data-delete-category="${category}">x</button>
               </span>`
           )
@@ -87,7 +88,10 @@
                   <td>${priceLabel(product)}</td>
                   <td>${displayQty(product.stock, product.unit)}</td>
                   <td>${product.saleType === "loose" ? `Loose / ${product.unit}` : "Pack"}</td>
-                  <td><button class="danger-action" data-delete-product="${product.id}">Delete</button></td>
+                  <td>
+                    <button class="secondary" data-edit-product="${product.id}">Edit</button>
+                    <button class="danger-action" data-delete-product="${product.id}">Delete</button>
+                  </td>
                 </tr>`
             )
             .join("") || `<tr><td colspan="7" class="empty">No products yet.</td></tr>`;
